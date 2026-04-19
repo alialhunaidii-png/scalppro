@@ -5,10 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ScalpPro — محلل مالي وفني</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <style>
 :root{
-  --bg0:#050810;--bg1:#080d1a;--bg2:#0d1526;--bg3:#111d33;
+  --bg0:#050810;--bg1:#080d1a;--bg2:#0d1526;
   --br:rgba(0,200,255,.10);--brb:rgba(0,200,255,.28);
   --cy:#00c8ff;--cyd:rgba(0,200,255,.14);
   --gr:#00ff88;--grd:rgba(0,255,136,.14);
@@ -20,137 +19,121 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;overflow:hidden;}
 body{font-family:var(--fa);background:var(--bg0);color:var(--t1);direction:rtl;}
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(rgba(0,200,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,.03) 1px,transparent 1px);
-  background-size:40px 40px;}
 
-header{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;
-  padding:9px 18px;background:rgba(8,13,26,.98);border-bottom:1px solid var(--br);}
+header{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 18px;background:rgba(8,13,26,.98);border-bottom:1px solid var(--br);
+  position:relative;z-index:10;}
 .logo{display:flex;align-items:center;gap:10px;}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--cy),#0055ee);border-radius:8px;
-  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;
-  font-family:var(--fm);color:#fff;box-shadow:0 0 18px rgba(0,200,255,.45);}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--cy),#0055ee);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;font-family:var(--fm);color:#fff;}
 .logo-text{font-size:19px;font-weight:700;}.logo-text b{color:var(--cy);}
 .logo-badge{font-size:9px;font-family:var(--fm);color:var(--gl);background:var(--gld);
-  border:1px solid rgba(255,208,96,.3);padding:2px 7px;border-radius:4px;letter-spacing:1px;}
-.hctrls{display:flex;align-items:center;gap:10px;}
-.tv-status{display:flex;align-items:center;gap:7px;padding:5px 11px;border-radius:7px;
-  border:1px solid var(--br);background:var(--bg2);font-size:11px;color:var(--t2);}
-.sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.sdot.on{background:var(--gr);box-shadow:0 0 7px var(--gr);animation:pulse 1.5s infinite;}
-.sdot.off{background:var(--rd);}
-.sdot.wait{background:var(--gl);}
+  border:1px solid rgba(255,208,96,.3);padding:2px 7px;border-radius:4px;}
+.hctrls{display:flex;align-items:center;gap:8px;}
 .mpill{display:flex;gap:3px;background:var(--bg2);border:1px solid var(--br);border-radius:8px;padding:3px;}
-.mpill button{font-family:var(--fa);font-size:11px;font-weight:600;padding:5px 11px;border-radius:6px;
-  border:none;cursor:pointer;background:transparent;color:var(--t2);transition:all .2s;}
+.mpill button{font-family:var(--fa);font-size:11px;font-weight:600;padding:5px 11px;
+  border-radius:6px;border:none;cursor:pointer;background:transparent;color:var(--t2);transition:all .2s;}
 .mpill button.active{background:var(--cyd);color:var(--cy);}
-.ai-btn{display:flex;align-items:center;gap:6px;font-family:var(--fa);font-size:11px;font-weight:600;
-  padding:6px 13px;border-radius:7px;border:1px solid var(--brb);background:var(--cyd);color:var(--cy);cursor:pointer;}
-.ai-btn:hover{background:rgba(0,200,255,.25);}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--gr);box-shadow:0 0 5px var(--gr);animation:pulse 1.5s infinite;}
+.ai-btn{display:flex;align-items:center;gap:6px;font-family:var(--fa);font-size:11px;
+  font-weight:600;padding:6px 13px;border-radius:7px;border:1px solid var(--brb);
+  background:var(--cyd);color:var(--cy);cursor:pointer;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--gr);
+  box-shadow:0 0 5px var(--gr);animation:pulse 1.5s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-.ticker{position:relative;z-index:9;background:var(--bg1);border-bottom:1px solid var(--br);
+.ticker{background:var(--bg1);border-bottom:1px solid var(--br);
   padding:5px 18px;display:flex;align-items:center;gap:0;overflow-x:auto;flex-shrink:0;}
 .ticker::-webkit-scrollbar{display:none;}
-.ti{display:flex;align-items:center;gap:5px;white-space:nowrap;cursor:pointer;flex-shrink:0;
-  padding:4px 10px;border-radius:5px;transition:background .15s;}
+.ti{display:flex;align-items:center;gap:5px;white-space:nowrap;cursor:pointer;
+  flex-shrink:0;padding:4px 10px;border-radius:5px;transition:background .15s;}
 .ti:hover,.ti.act{background:var(--cyd);}
 .tsym{font-family:var(--fm);font-size:10px;color:var(--t3);}
-.tprice{font-family:var(--fm);font-size:12px;font-weight:600;color:var(--t1);}
-.tchg{font-family:var(--fm);font-size:9px;padding:1px 4px;border-radius:3px;margin-right:2px;}
-.tchg.up{color:var(--gr);background:var(--grd);}.tchg.dn{color:var(--rd);background:var(--rdd);}
-.tsep{width:1px;height:14px;background:var(--br);flex-shrink:0;margin:0 2px;}
+.tname{font-family:var(--fm);font-size:11px;color:var(--t2);}
+.tsep{width:1px;height:14px;background:var(--br);flex-shrink:0;margin:0 4px;}
 
-.wrap{display:flex;height:calc(100vh - 84px);position:relative;z-index:1;}
+.wrap{display:flex;height:calc(100vh - 84px);}
 
 /* LEFT */
-.left{width:210px;flex-shrink:0;background:var(--bg1);border-left:1px solid var(--br);
+.left{width:200px;flex-shrink:0;background:var(--bg1);border-left:1px solid var(--br);
   display:flex;flex-direction:column;overflow:hidden;}
 .psec{padding:10px 12px;border-bottom:1px solid var(--br);}
-.stitle{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--t3);margin-bottom:8px;text-transform:uppercase;}
+.stitle{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--t3);
+  margin-bottom:8px;text-transform:uppercase;}
 .sym-row{display:flex;gap:5px;margin-bottom:7px;}
-.sym-inp{flex:1;background:var(--bg2);border:1px solid var(--br);border-radius:6px;padding:6px 8px;
-  font-family:var(--fm);font-size:11px;color:var(--t1);outline:none;direction:ltr;}
+.sym-inp{flex:1;background:var(--bg2);border:1px solid var(--br);border-radius:6px;
+  padding:6px 8px;font-family:var(--fm);font-size:11px;color:var(--t1);
+  outline:none;direction:ltr;}
 .sym-inp:focus{border-color:var(--cy);}
-.sym-go{background:var(--cyd);border:1px solid var(--brb);color:var(--cy);border-radius:6px;
-  padding:6px 10px;font-size:13px;cursor:pointer;font-weight:700;}
+.sym-go{background:var(--cyd);border:1px solid var(--brb);color:var(--cy);
+  border-radius:6px;padding:6px 10px;font-size:13px;cursor:pointer;font-weight:700;}
 .tfs{display:flex;flex-wrap:wrap;gap:3px;}
 .tfb{font-family:var(--fm);font-size:10px;padding:3px 7px;border-radius:4px;
-  border:1px solid var(--br);background:transparent;color:var(--t2);cursor:pointer;transition:all .15s;}
+  border:1px solid var(--br);background:transparent;color:var(--t2);cursor:pointer;}
 .tfb:hover{border-color:var(--cy);color:var(--cy);}
 .tfb.active{background:var(--cyd);border-color:var(--cy);color:var(--cy);}
 .wl-scroll{flex:1;overflow-y:auto;padding:8px 10px;}
-.wl-title{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--t3);margin-bottom:8px;
-  text-transform:uppercase;display:flex;align-items:center;gap:5px;}
-.ldot{width:5px;height:5px;border-radius:50%;background:var(--gr);box-shadow:0 0 4px var(--gr);
-  animation:pulse 1.5s infinite;display:inline-block;}
+.wl-title{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--t3);
+  margin-bottom:8px;text-transform:uppercase;}
 .wl-item{display:flex;justify-content:space-between;align-items:center;padding:7px;
-  border-radius:6px;cursor:pointer;transition:all .15s;border:1px solid transparent;margin-bottom:2px;}
+  border-radius:6px;cursor:pointer;border:1px solid transparent;margin-bottom:2px;transition:all .15s;}
 .wl-item:hover{background:var(--bg2);border-color:var(--br);}
 .wl-item.act{background:var(--cyd);border-color:var(--brb);}
 .wl-sym{font-family:var(--fm);font-size:11px;font-weight:600;color:var(--t1);}
 .wl-name{font-size:9px;color:var(--t3);margin-top:1px;}
-.wl-chg{font-family:var(--fm);font-size:9px;}
-.wl-chg.up{color:var(--gr);}.wl-chg.dn{color:var(--rd);}
-.sig-panel{padding:10px 12px;border-top:1px solid var(--br);overflow-y:auto;max-height:300px;}
-.score-box{background:var(--bg2);border:1px solid var(--br);border-radius:7px;padding:10px;text-align:center;margin-bottom:7px;}
-.score-n{font-family:var(--fm);font-size:26px;font-weight:700;}
-.score-v{font-size:10px;font-weight:700;margin-top:3px;}
-.sigcard{background:var(--bg2);border:1px solid var(--br);border-radius:6px;padding:9px;margin-bottom:5px;}
-.sigh{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-.sign{font-size:10px;font-weight:700;color:var(--t2);}
-.sigb{font-size:8px;font-family:var(--fm);font-weight:600;padding:2px 6px;border-radius:3px;}
-.sigb.buy{background:var(--grd);color:var(--gr);}
-.sigb.sell{background:var(--rdd);color:var(--rd);}
-.sigb.neutral{background:var(--gld);color:var(--gl);}
-.sigv{font-family:var(--fm);font-size:15px;font-weight:700;}
-.sigs{font-size:9px;color:var(--t3);margin-top:2px;}
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--brb);border-radius:2px;}
 
 /* CENTER */
 .center{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-.ctopbar{display:flex;align-items:center;gap:10px;padding:7px 14px;background:var(--bg1);
-  border-bottom:1px solid var(--br);flex-shrink:0;}
+.ctopbar{display:flex;align-items:center;gap:10px;padding:7px 14px;
+  background:var(--bg1);border-bottom:1px solid var(--br);flex-shrink:0;}
 .csym{font-family:var(--fm);font-size:18px;font-weight:700;}
-.cprice{font-family:var(--fm);font-size:16px;font-weight:700;color:var(--cy);}
-.cchg{font-family:var(--fm);font-size:13px;}
-#tv_chart_container{flex:1;width:100%;min-height:0;}
+.ldot{width:5px;height:5px;border-radius:50%;background:var(--gr);
+  box-shadow:0 0 4px var(--gr);animation:pulse 1.5s infinite;display:inline-block;}
+
+/* ✅ TradingView iframe مباشر */
+#tvframe{flex:1;border:none;width:100%;height:100%;display:block;}
 
 /* RIGHT */
-.right{width:265px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--br);
+.right{width:260px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--br);
   display:flex;flex-direction:column;overflow-y:auto;}
 .rpsec{padding:12px 14px;border-bottom:1px solid var(--br);}
-.rptitle{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--t3);margin-bottom:9px;
-  text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.rptitle{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--t3);
+  margin-bottom:9px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
 .rptitle::before{content:'';width:3px;height:10px;background:var(--cy);border-radius:2px;}
 .ai-box{background:var(--bg2);border:1px solid var(--br);border-radius:8px;padding:11px;}
-.ai-msg{font-size:11px;line-height:1.85;color:var(--t1);border-right:2px solid var(--cy);padding-right:8px;min-height:60px;}
+.ai-msg{font-size:11px;line-height:1.85;color:var(--t1);border-right:2px solid var(--cy);
+  padding-right:8px;min-height:60px;}
 .ai-typing{display:none;gap:3px;align-items:center;margin-top:7px;}
-.ai-typing span{width:4px;height:4px;border-radius:50%;background:var(--cy);opacity:.4;animation:typ 1.2s infinite;}
-.ai-typing span:nth-child(2){animation-delay:.2s;}.ai-typing span:nth-child(3){animation-delay:.4s;}
+.ai-typing span{width:4px;height:4px;border-radius:50%;background:var(--cy);
+  opacity:.4;animation:typ 1.2s infinite;}
+.ai-typing span:nth-child(2){animation-delay:.2s;}
+.ai-typing span:nth-child(3){animation-delay:.4s;}
 .ai-typing em{font-size:9px;color:var(--t3);font-style:normal;margin-right:4px;}
 @keyframes typ{0%,60%,100%{opacity:.4;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
 .ai-row{display:flex;gap:5px;margin-top:9px;}
-.ai-inp{flex:1;background:var(--bg3);border:1px solid var(--br);border-radius:6px;padding:6px 8px;
-  font-family:var(--fa);font-size:11px;color:var(--t1);outline:none;}
+.ai-inp{flex:1;background:#111d33;border:1px solid var(--br);border-radius:6px;
+  padding:6px 8px;font-family:var(--fa);font-size:11px;color:var(--t1);outline:none;}
 .ai-inp:focus{border-color:var(--cy);}
-.ai-send{background:var(--cyd);border:1px solid var(--brb);color:var(--cy);border-radius:6px;
-  padding:6px 10px;font-family:var(--fa);font-size:11px;cursor:pointer;white-space:nowrap;}
-.price-input-box{background:var(--bg2);border:1px solid var(--brb);border-radius:8px;padding:10px;margin-bottom:2px;}
-.price-input-box label{font-size:9px;color:var(--cy);display:block;margin-bottom:5px;letter-spacing:1px;}
-.price-inp{width:100%;background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:6px 9px;
-  font-family:var(--fm);font-size:13px;color:var(--t1);outline:none;direction:ltr;}
+.ai-send{background:var(--cyd);border:1px solid var(--brb);color:var(--cy);
+  border-radius:6px;padding:6px 10px;font-family:var(--fa);font-size:11px;cursor:pointer;}
+.price-box{background:var(--bg2);border:1px solid var(--brb);border-radius:8px;padding:10px;margin-bottom:2px;}
+.price-box label{font-size:9px;color:var(--cy);display:block;margin-bottom:5px;letter-spacing:1px;}
+.price-inp{width:100%;background:#111d33;border:1px solid var(--br);border-radius:5px;
+  padding:6px 9px;font-family:var(--fm);font-size:13px;color:var(--t1);
+  outline:none;direction:ltr;margin-bottom:5px;}
 .price-inp:focus{border-color:var(--cy);}
-.calc-btn{width:100%;margin-top:7px;background:var(--cyd);border:1px solid var(--brb);color:var(--cy);
-  border-radius:6px;padding:7px;font-family:var(--fa);font-size:11px;cursor:pointer;font-weight:600;}
-.calc-btn:hover{background:rgba(0,200,255,.25);}
-.sr-item{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-radius:5px;margin-bottom:3px;}
+.calc-btn{width:100%;margin-top:5px;background:var(--cyd);border:1px solid var(--brb);
+  color:var(--cy);border-radius:6px;padding:7px;font-family:var(--fa);
+  font-size:11px;cursor:pointer;font-weight:600;}
+.sr-item{display:flex;justify-content:space-between;align-items:center;
+  padding:6px 8px;border-radius:5px;margin-bottom:3px;}
 .sr-item.res{background:var(--rdd);border:1px solid rgba(255,51,102,.2);}
 .sr-item.sup{background:var(--grd);border:1px solid rgba(0,255,136,.2);}
 .sr-lbl{font-size:10px;font-weight:600;}
-.sr-item.res .sr-lbl{color:var(--rd);}.sr-item.sup .sr-lbl{color:var(--gr);}
+.sr-item.res .sr-lbl{color:var(--rd);}
+.sr-item.sup .sr-lbl{color:var(--gr);}
 .sr-val{font-family:var(--fm);font-size:11px;color:var(--t1);}
 .sr-str{font-size:8px;color:var(--t3);}
 .sr-sep{height:1px;background:var(--br);margin:4px 0;}
@@ -161,32 +144,22 @@ header{position:relative;z-index:10;display:flex;align-items:center;justify-cont
 .tbox.sl{border-color:rgba(255,51,102,.2);}
 .tlbl{font-size:8px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
 .tval{font-family:var(--fm);font-size:13px;font-weight:700;}
-.tbox.entry .tval{color:var(--cy);}.tbox.tp .tval{color:var(--gr);}.tbox.sl .tval{color:var(--rd);}
-.rrbadge{display:flex;justify-content:center;align-items:center;gap:7px;background:var(--gld);
-  border:1px solid rgba(255,208,96,.25);border-radius:6px;padding:6px;margin-top:6px;}
+.tbox.entry .tval{color:var(--cy);}
+.tbox.tp .tval{color:var(--gr);}
+.tbox.sl .tval{color:var(--rd);}
+.rrbadge{display:flex;justify-content:center;align-items:center;gap:7px;
+  background:var(--gld);border:1px solid rgba(255,208,96,.25);
+  border-radius:6px;padding:6px;margin-top:6px;}
 .rrbadge span{font-size:10px;color:var(--gl);}
 .rrbadge strong{font-family:var(--fm);font-size:12px;color:var(--gl);}
-.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--bg2);
-  border:1px solid var(--brb);color:var(--t1);font-size:11px;padding:7px 16px;
-  border-radius:7px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+  background:var(--bg2);border:1px solid var(--brb);color:var(--t1);
+  font-size:11px;padding:7px 16px;border-radius:7px;z-index:9999;
+  opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
-.loading{position:fixed;inset:0;background:var(--bg0);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;z-index:9999;transition:opacity .6s;}
-.loading.hidden{opacity:0;pointer-events:none;}
-.llogo{font-size:32px;font-weight:900;font-family:var(--fm);color:var(--cy);letter-spacing:-2px;margin-bottom:18px;}
-.lbar{width:170px;height:2px;background:var(--bg3);border-radius:1px;overflow:hidden;}
-.lfill{height:100%;background:linear-gradient(90deg,var(--cy),#0055ee);border-radius:1px;animation:ld 1.8s ease forwards;}
-@keyframes ld{from{width:0}to{width:100%}}
-.ltxt{font-size:10px;color:var(--t3);margin-top:9px;letter-spacing:1px;}
 </style>
 </head>
 <body>
-
-<div class="loading" id="loading">
-  <div class="llogo">ScalpPro</div>
-  <div class="lbar"><div class="lfill"></div></div>
-  <div class="ltxt">جاري الاتصال بـ TradingView...</div>
-</div>
 
 <header>
   <div class="logo">
@@ -195,14 +168,10 @@ header{position:relative;z-index:10;display:flex;align-items:center;justify-cont
     <div class="logo-badge">UltraEdge • Premium</div>
   </div>
   <div class="hctrls">
-    <div class="tv-status" id="tvStatus">
-      <span class="sdot wait" id="tvDot"></span>
-      <span id="tvTxt">جاري الاتصال...</span>
-    </div>
     <div class="mpill">
       <button id="btn-CRYPTO" onclick="switchMarket('CRYPTO')">₿ كريبتو</button>
-      <button id="btn-US"     onclick="switchMarket('US')">🇺🇸 أمريكي</button>
-      <button id="btn-SA"     onclick="switchMarket('SA')">🇸🇦 سعودي</button>
+      <button id="btn-US" onclick="switchMarket('US')">🇺🇸 أمريكي</button>
+      <button id="btn-SA" onclick="switchMarket('SA')">🇸🇦 سعودي</button>
     </div>
     <button class="ai-btn" onclick="triggerAI()"><div class="dot"></div>محلل الذكاء</button>
   </div>
@@ -215,7 +184,7 @@ header{position:relative;z-index:10;display:flex;align-items:center;justify-cont
     <div class="psec">
       <div class="stitle">بحث عن رمز</div>
       <div class="sym-row">
-        <input class="sym-inp" id="symInp" placeholder="NVDA / BTCUSDT / 2222" onkeydown="if(event.key==='Enter')loadInput()">
+        <input class="sym-inp" id="symInp" placeholder="NVDA / BTCUSDT" onkeydown="if(event.key==='Enter')loadInput()">
         <button class="sym-go" onclick="loadInput()">↵</button>
       </div>
       <div class="tfs">
@@ -228,31 +197,8 @@ header{position:relative;z-index:10;display:flex;align-items:center;justify-cont
       </div>
     </div>
     <div class="wl-scroll">
-      <div class="wl-title">قائمة المراقبة <span class="ldot"></span></div>
+      <div class="wl-title">قائمة المراقبة</div>
       <div id="wlList"></div>
-    </div>
-    <div class="sig-panel">
-      <div class="stitle">إشارات المؤشرات</div>
-      <div class="score-box">
-        <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:var(--t3);margin-bottom:4px;text-transform:uppercase;">نقاط الالتقاء / 10</div>
-        <div class="score-n" id="scoreN" style="color:var(--cy)">--</div>
-        <div class="score-v" id="scoreV" style="color:var(--t3)">أدخل السعر واحسب</div>
-      </div>
-      <div class="sigcard">
-        <div class="sigh"><span class="sign">Triple MACD</span><span class="sigb neutral" id="sbM">--</span></div>
-        <div class="sigv" id="svM" style="color:var(--t3)">--</div>
-        <div class="sigs" id="ssM">--</div>
-      </div>
-      <div class="sigcard">
-        <div class="sigh"><span class="sign">RSI</span><span class="sigb neutral" id="sbR">--</span></div>
-        <div class="sigv" id="svR" style="color:var(--t3)">--</div>
-        <div class="sigs" id="ssR">--</div>
-      </div>
-      <div class="sigcard">
-        <div class="sigh"><span class="sign">CVD / حجم</span><span class="sigb neutral" id="sbC">--</span></div>
-        <div class="sigv" id="svC" style="color:var(--t3)">--</div>
-        <div class="sigs" id="ssC">--</div>
-      </div>
     </div>
   </div>
 
@@ -261,9 +207,7 @@ header{position:relative;z-index:10;display:flex;align-items:center;justify-cont
       <div>
         <div style="font-size:8px;color:var(--t3);margin-bottom:1px;">الرمز الحالي</div>
         <div style="display:flex;gap:8px;align-items:baseline;">
-          <span class="csym" id="curSym">--</span>
-          <span class="cprice" id="curPrice">--</span>
-          <span class="cchg" id="curChg"></span>
+          <span class="csym" id="curSym">BTCUSDT</span>
         </div>
       </div>
       <div style="margin-right:auto;display:flex;align-items:center;gap:6px;">
@@ -271,19 +215,17 @@ header{position:relative;z-index:10;display:flex;align-items:center;justify-cont
         <span style="font-size:9px;color:var(--t3);">أسعار حية — TradingView Premium</span>
       </div>
     </div>
-    <!-- TradingView Advanced Chart Widget -->
-    <div id="tv_chart_container"></div>
+    <iframe id="tvframe" allowfullscreen></iframe>
   </div>
 
   <div class="right">
-    <!-- Price input for calculations -->
     <div class="rpsec">
       <div class="rptitle">أدخل السعر الحالي</div>
-      <div class="price-input-box">
+      <div class="price-box">
         <label>📍 السعر من الرسم البياني</label>
-        <input class="price-inp" id="priceInp" type="number" placeholder="e.g. 67240" onkeydown="if(event.key==='Enter')calcSetup()">
-        <input class="price-inp" id="chgInp" type="number" placeholder="التغير % (e.g. 1.65)" style="margin-top:5px;" onkeydown="if(event.key==='Enter')calcSetup()">
-        <button class="calc-btn" onclick="calcSetup()">⚡ احسب الدعم والمقاومة والإعداد</button>
+        <input class="price-inp" id="priceInp" type="number" placeholder="السعر (مثال: 67240)">
+        <input class="price-inp" id="chgInp" type="number" placeholder="التغير % (مثال: 1.65)">
+        <button class="calc-btn" onclick="calcSetup()">⚡ احسب الدعم والمقاومة</button>
       </div>
     </div>
 
@@ -304,20 +246,16 @@ header{position:relative;z-index:10;display:flex;align-items:center;justify-cont
 
     <div class="rpsec">
       <div class="rptitle">مناطق الدعم والمقاومة</div>
-      <div id="srLvls">
-        <div style="font-size:10px;color:var(--t3);text-align:center;padding:10px;line-height:1.8;">
-          أدخل السعر أعلاه<br>ثم اضغط "احسب"
-        </div>
-      </div>
+      <div id="srLvls"><div style="font-size:10px;color:var(--t3);text-align:center;padding:10px;">أدخل السعر واحسب</div></div>
     </div>
 
     <div class="rpsec">
       <div class="rptitle">إعداد الصفقة</div>
       <div class="tgrid">
         <div class="tbox entry"><div class="tlbl">دخول</div><div class="tval" id="tE">--</div></div>
-        <div class="tbox sl">   <div class="tlbl">وقف</div>  <div class="tval" id="tSL">--</div></div>
-        <div class="tbox tp">   <div class="tlbl">هدف 1</div><div class="tval" id="tT1">--</div></div>
-        <div class="tbox tp">   <div class="tlbl">هدف 2</div><div class="tval" id="tT2">--</div></div>
+        <div class="tbox sl"><div class="tlbl">وقف</div><div class="tval" id="tSL">--</div></div>
+        <div class="tbox tp"><div class="tlbl">هدف 1</div><div class="tval" id="tT1">--</div></div>
+        <div class="tbox tp"><div class="tlbl">هدف 2</div><div class="tval" id="tT2">--</div></div>
       </div>
       <div class="rrbadge"><span>نسبة المخاطرة / العائد</span><strong id="rrV">--</strong></div>
     </div>
@@ -327,11 +265,7 @@ header{position:relative;z-index:10;display:flex;align-items:center;justify-cont
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════
-const S = { tvSym:'BINANCE:BTCUSDT', label:'BTC', type:'crypto', tf:'3', market:'CRYPTO' };
-let tvWidget = null;
+const S = { tvSym:'BINANCE:BTCUSDT', label:'BTC', tf:'3', market:'CRYPTO' };
 
 const WL = {
   CRYPTO:[
@@ -352,7 +286,7 @@ const WL = {
     {tv:'NASDAQ:AMD',  lbl:'AMD',  name:'AMD'},
     {tv:'NASDAQ:META', lbl:'META', name:'Meta'},
     {tv:'NASDAQ:AMZN', lbl:'AMZN', name:'Amazon'},
-    {tv:'NYSE:SPY',    lbl:'SPY',  name:'S&P 500 ETF'},
+    {tv:'NYSE:SPY',    lbl:'SPY',  name:'S&P 500'},
   ],
   SA:[
     {tv:'TADAWUL:2222', lbl:'أرامكو',     name:'Saudi Aramco'},
@@ -362,111 +296,26 @@ const WL = {
     {tv:'TADAWUL:2380', lbl:'بوبا',       name:'Bupa Arabia'},
     {tv:'TADAWUL:4030', lbl:'دار الأركان',name:'Dar Al Arkan'},
     {tv:'TADAWUL:1211', lbl:'معادن',      name:'Maaden'},
-    {tv:'TADAWUL:2010', lbl:'سابك',       name:'SABIC'},
   ]
 };
 
-// ══════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════
 window.addEventListener('load', () => {
   setMkt('CRYPTO');
   renderTicker();
   renderWL();
-  initTV('BINANCE:BTCUSDT', '3');
-  document.getElementById('curSym').textContent = 'BTC';
-  setTimeout(()=>document.getElementById('loading').classList.add('hidden'), 100 );
+  loadTV('BINANCE:BTCUSDT', '3');
 });
 
-// ══════════════════════════════════════════
-// TRADINGVIEW WIDGET
-// يستخدم session اشتراكك تلقائياً
-// لأن cookies tradingview.com مشتركة في نفس المتصفح
-// ══════════════════════════════════════════
-function initTV(symbol, interval) {
-  const container = document.getElementById('tv_chart_container');
-  container.innerHTML = '';
-
-  // حساب الارتفاع
-  const h = window.innerHeight
-    - document.querySelector('header').offsetHeight
-    - document.querySelector('.ticker').offsetHeight
-    - document.querySelector('.ctopbar').offsetHeight;
-  container.style.height = h + 'px';
-
-  if (typeof TradingView === 'undefined') {
-    container.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--t3);">
-      <div style="font-size:32px;">📡</div>
-      <div style="font-size:12px;">جاري تحميل TradingView...</div>
-    </div>`;
-    setTimeout(() => initTV(symbol, interval), 2000);
-    return;
-  }
-
-  tvWidget = new TradingView.widget({
-    container_id:        'tv_chart_container',
-    autosize:            true,
-    symbol:              symbol,
-    interval:            interval,
-    timezone:            'Asia/Riyadh',
-    theme:               'dark',
-    style:               '1',
-    locale:              'ar',
-    toolbar_bg:          '#080d1a',
-    backgroundColor:     'rgba(5,8,16,1)',
-    gridColor:           'rgba(0,200,255,0.04)',
-    hide_top_toolbar:    false,
-    hide_legend:         false,
-    hide_side_toolbar:   false,
-    allow_symbol_change: true,
-    save_image:          false,
-    withdateranges:      true,
-    studies: ['Volume@tv-basicstudies', 'VWAP@tv-basicstudies'],
-    overrides: {
-      'mainSeriesProperties.candleStyle.upColor':         '#00ff88',
-      'mainSeriesProperties.candleStyle.downColor':       '#ff3366',
-      'mainSeriesProperties.candleStyle.borderUpColor':   '#00ff88',
-      'mainSeriesProperties.candleStyle.borderDownColor': '#ff3366',
-      'mainSeriesProperties.candleStyle.wickUpColor':     'rgba(0,255,136,0.6)',
-      'mainSeriesProperties.candleStyle.wickDownColor':   'rgba(255,51,102,0.6)',
-      'paneProperties.background':                        '#050810',
-      'paneProperties.backgroundType':                    'solid',
-      'paneProperties.vertGridProperties.color':          'rgba(0,200,255,0.04)',
-      'paneProperties.horzGridProperties.color':          'rgba(0,200,255,0.04)',
-      'scalesProperties.textColor':                       '#7a9ab8',
-      'scalesProperties.backgroundColor':                 '#080d1a',
-    },
-  });
-
-  // TradingView widget يحمل بيانات اشتراكك من cookies المتصفح
-  tvWidget.onChartReady(() => {
-    setTVConnected();
-    // تتبع تغيير الرمز
-    tvWidget.activeChart().onSymbolChanged().subscribe(null, () => {
-      const sym = tvWidget.activeChart().symbol();
-      const lbl = sym.split(':').pop().replace('USDT','');
-      document.getElementById('curSym').textContent = lbl;
-      S.tvSym = sym; S.label = lbl;
-    });
-  });
+// ✅ iframe مباشر — أبسط وأثبت من widget
+function loadTV(sym, tf) {
+  const frame = document.getElementById('tvframe');
+  frame.src = `https://www.tradingview.com/widgetbar-chart-only/?symbol=${encodeURIComponent(sym)}&interval=${tf}&theme=dark&style=1&locale=ar&hide_top_toolbar=0&allow_symbol_change=1&save_image=0&backgroundColor=%23050810`;
 }
 
-function setTVConnected() {
-  document.getElementById('tvDot').className = 'sdot on';
-  document.getElementById('tvTxt').textContent = 'متصل — أسعار Premium حية';
-}
-
-// ══════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════
 function go(tvSym, label) {
   S.tvSym = tvSym; S.label = label;
   document.getElementById('curSym').textContent = label;
-  document.getElementById('curPrice').textContent = '→ انظر الرسم';
-  if (tvWidget) {
-    try { tvWidget.activeChart().setSymbol(tvSym, ()=>{}); }
-    catch(e) { initTV(tvSym, S.tf); }
-  } else { initTV(tvSym, S.tf); }
+  loadTV(tvSym, S.tf);
   renderWL();
   showToast('✓ ' + label);
 }
@@ -474,159 +323,99 @@ function go(tvSym, label) {
 function loadInput() {
   const v = document.getElementById('symInp').value.trim().toUpperCase();
   if(!v) return;
-  const cryptoKeywords = ['BTC','ETH','SOL','BNB','XRP','DOGE','ADA','AVAX','MATIC','DOT','LINK','OP','ARB'];
-  const isCrypto = v.endsWith('USDT') || cryptoKeywords.includes(v);
+  const cryptoList = ['BTC','ETH','SOL','BNB','XRP','DOGE','ADA','AVAX'];
+  const isCrypto = v.endsWith('USDT') || cryptoList.includes(v);
   const raw = isCrypto ? (v.endsWith('USDT')?v:v+'USDT') : v;
   const tv  = isCrypto ? `BINANCE:${raw}` : (v.includes(':')?v:`NASDAQ:${v}`);
   const lbl = raw.replace('USDT','');
   go(tv, lbl);
 }
 
-// ══════════════════════════════════════════
-// TIMEFRAME
-// ══════════════════════════════════════════
 function setTF(tf, btn) {
   S.tf = tf;
   document.querySelectorAll('.tfb').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  if (tvWidget) {
-    try { tvWidget.activeChart().setResolution(tf, ()=>{}); return; } catch(e){}
-  }
-  initTV(S.tvSym, tf);
+  loadTV(S.tvSym, tf);
 }
 
-// ══════════════════════════════════════════
-// MARKET
-// ══════════════════════════════════════════
 function switchMarket(m) {
   S.market = m; setMkt(m); renderTicker(); renderWL();
   const f = WL[m][0]; go(f.tv, f.lbl);
 }
+
 function setMkt(m) {
   ['CRYPTO','US','SA'].forEach(k=>document.getElementById(`btn-${k}`).classList.toggle('active',k===m));
   S.market = m;
 }
 
-// ══════════════════════════════════════════
-// TICKER
-// ══════════════════════════════════════════
 function renderTicker() {
   document.getElementById('ticker').innerHTML = WL[S.market].slice(0,6).map((w,i)=>`
     ${i?'<div class="tsep"></div>':''}
     <div class="ti ${w.tv===S.tvSym?'act':''}" onclick="go('${w.tv}','${w.lbl}')">
       <span class="tsym">${w.lbl}</span>
-      <span class="tprice" style="margin-right:4px;">${w.name}</span>
     </div>`).join('');
 }
 
-// ══════════════════════════════════════════
-// WATCHLIST
-// ══════════════════════════════════════════
 function renderWL() {
   document.getElementById('wlList').innerHTML = WL[S.market].map(w=>`
     <div class="wl-item ${w.tv===S.tvSym?'act':''}" onclick="go('${w.tv}','${w.lbl}')">
       <div><div class="wl-sym">${w.lbl}</div><div class="wl-name">${w.name}</div></div>
-      <div style="text-align:left;">
-        <div style="font-size:9px;color:var(--cy);">▶ فتح</div>
-      </div>
+      <div style="font-size:9px;color:var(--cy);">▶</div>
     </div>`).join('');
 }
 
-// ══════════════════════════════════════════
-// CALCULATE SETUP (من سعر يدخله المستخدم)
-// ══════════════════════════════════════════
 function calcSetup() {
   const price = parseFloat(document.getElementById('priceInp').value);
   const chg   = parseFloat(document.getElementById('chgInp').value) || 0;
-  if(!price || price <= 0) { showToast('⚠️ أدخل السعر أولاً'); return; }
-
-  const atr = price * 0.015;
-  const dp  = price<1?5:price<10?3:2;
-  const e   = price;
-  const sl  = +(price - atr*1.2).toFixed(dp);
-  const tp1 = +(price + atr*1.8).toFixed(dp);
-  const tp2 = +(price + atr*3.6).toFixed(dp);
-  const rr  = ((tp2-price)/(price-sl)).toFixed(1);
-
-  document.getElementById('tE').textContent   = fmtN(e);
-  document.getElementById('tSL').textContent  = fmtN(sl);
-  document.getElementById('tT1').textContent  = fmtN(tp1);
-  document.getElementById('tT2').textContent  = fmtN(tp2);
-  document.getElementById('rrV').textContent  = `1 : ${rr}`;
-  document.getElementById('curPrice').textContent = fmtN(price);
-
-  // SR
+  if(!price||price<=0){showToast('⚠️ أدخل السعر');return;}
+  const atr=price*0.015, dp=price<1?5:price<10?3:2;
+  const sl=+(price-atr*1.2).toFixed(dp), tp1=+(price+atr*1.8).toFixed(dp), tp2=+(price+atr*3.6).toFixed(dp);
+  const rr=((tp2-price)/(price-sl)).toFixed(1);
+  document.getElementById('tE').textContent=fmtN(price);
+  document.getElementById('tSL').textContent=fmtN(sl);
+  document.getElementById('tT1').textContent=fmtN(tp1);
+  document.getElementById('tT2').textContent=fmtN(tp2);
+  document.getElementById('rrV').textContent=`1 : ${rr}`;
   const res=[3.5,2.2,1.0].map((m,i)=>({t:'res',l:`مقاومة ${i+1}`,v:+(price+atr*m).toFixed(dp),s:['ضعيفة','متوسطة','قوية 🔴'][i]}));
-  const sup=[0.8,2.0,3.4].map((m,i)=>({t:'sup',l:`دعم ${i+1}`,   v:+(price-atr*m).toFixed(dp),s:['قوي 🟢','متوسط','ضعيف'][i]}));
+  const sup=[0.8,2.0,3.4].map((m,i)=>({t:'sup',l:`دعم ${i+1}`,v:+(price-atr*m).toFixed(dp),s:['قوي 🟢','متوسط','ضعيف'][i]}));
   document.getElementById('srLvls').innerHTML=
     res.map(x=>`<div class="sr-item res"><span class="sr-lbl">${x.l}</span><div><div class="sr-val">${fmtN(x.v)}</div><div class="sr-str">${x.s}</div></div></div>`).join('')+
     '<div class="sr-sep"></div>'+
     sup.map(x=>`<div class="sr-item sup"><span class="sr-lbl">${x.l}</span><div><div class="sr-val">${fmtN(x.v)}</div><div class="sr-str">${x.s}</div></div></div>`).join('');
-
-  // Signals
-  const rsi=Math.min(84,Math.max(16,50+chg*3));
-  const score=+Math.min(10,Math.max(0,5+(chg>0?Math.min(chg,3):Math.max(chg,-3))*0.9+(rsi>55?.5:-.5))).toFixed(1);
-  document.getElementById('scoreN').textContent=score;
-  document.getElementById('scoreN').style.color=score>=7?'var(--gr)':score>=5?'var(--gl)':'var(--rd)';
-  document.getElementById('scoreV').textContent=score>=7?'إشارة شراء قوية':score>=5?'محايد — ترقب':'إشارة بيع';
-  document.getElementById('scoreV').style.color=score>=7?'var(--gr)':score>=5?'var(--gl)':'var(--rd)';
-  setSig('M',chg>0.3?'buy':'sell',chg>0.3?'شراء':'بيع',chg>0.3?'▲ صعود':'▼ هبوط',chg>0.3?'var(--gr)':'var(--rd)',`تغير: ${chg.toFixed(2)}%`);
-  setSig('R',rsi>70?'sell':rsi<30?'buy':'neutral',rsi>70?'تشبع شراء':rsi<30?'تشبع بيع':'محايد',rsi.toFixed(1),rsi>50?'var(--gr)':'var(--rd)',rsi>70?'منطقة خطرة':rsi<30?'فرصة':'منطقة وسطى');
-  setSig('C',chg>0?'buy':'sell',chg>0?'تدفق +':'تدفق -',chg>0?'▲ شراء':'▼ بيع',chg>0?'var(--cy)':'var(--rd)',`CVD: ${chg>0?'إيجابي':'سلبي'}`);
   showToast('✅ تم الحساب');
 }
 
-function setSig(id,cls,b,v,col,s){
-  document.getElementById(`sb${id}`).textContent=b;document.getElementById(`sb${id}`).className=`sigb ${cls}`;
-  document.getElementById(`sv${id}`).textContent=v;document.getElementById(`sv${id}`).style.color=col;
-  document.getElementById(`ss${id}`).textContent=s;
-}
-
-// ══════════════════════════════════════════
-// AI
-// ══════════════════════════════════════════
 async function sendAI() {
   const inp=document.getElementById('aiInp');
-  const q=inp.value.trim(); if(!q) return;
+  const q=inp.value.trim();if(!q)return;
   inp.value='';
-  const msg=document.getElementById('aiMsg'), typ=document.getElementById('aiTyp');
-  msg.style.display='none'; typ.style.display='flex';
-  const price=document.getElementById('priceInp').value||'(انظر الرسم البياني)';
-  const chg=document.getElementById('chgInp').value||'0';
+  const msg=document.getElementById('aiMsg'),typ=document.getElementById('aiTyp');
+  msg.style.display='none';typ.style.display='flex';
+  const price=document.getElementById('priceInp').value||'(انظر الرسم)';
   try {
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
         messages:[{role:'user',content:
           `أنت محلل مالي وفني خبير في السكالبينج.
-الرمز: ${S.label} | الإطار: ${S.tf}د | السوق: ${S.market}
-السعر الحالي: ${price} | التغير: ${chg}%
-المنصة: ScalpPro مربوطة بـ TradingView Premium.
+الرمز: ${S.label} | الإطار: ${S.tf}د | السوق: ${S.market} | السعر: ${price}
 السؤال: ${q}
-أجب بالعربية بشكل مختصر ومحترف. إن كان عن صفقة: دخول، وقف، هدف1، هدف2، RR.`
+أجب بالعربية بشكل مختصر. إن كان عن صفقة: دخول، وقف، هدف1، هدف2، RR.`
         }]})});
     const data=await res.json();
     const text=data.content?.[0]?.text||'لا توجد استجابة';
-    typ.style.display='none'; msg.style.display='block';
+    typ.style.display='none';msg.style.display='block';
     msg.innerHTML=text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong style="color:var(--cy)">$1</strong>');
-  } catch(e) {
-    typ.style.display='none'; msg.style.display='block';
-    msg.innerHTML='⚠️ تعذر الاتصال.';
-  }
+  } catch(e){typ.style.display='none';msg.style.display='block';msg.innerHTML='⚠️ تعذر الاتصال.';}
 }
 
-function triggerAI() {
-  const p=document.getElementById('priceInp').value||'';
-  document.getElementById('aiInp').value=`حلل ${S.label} على الإطار ${S.tf}د${p?` عند سعر ${p}`:''}. أعطني إعداد صفقة سكالب بدخول ووقف وأهداف ونسبة RR.`;
+function triggerAI(){
+  document.getElementById('aiInp').value=`حلل ${S.label} على الإطار ${S.tf}د وأعطني إعداد صفقة سكالب`;
   sendAI();
 }
 
-// ══════════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════════
 function fmtN(n){if(!n&&n!==0)return'--';if(n>=1000)return n.toLocaleString('en',{maximumFractionDigits:2});if(n<1)return n.toFixed(5);if(n<10)return n.toFixed(3);return n.toFixed(2);}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
-window.addEventListener('resize',()=>{ try{if(tvWidget)tvWidget.resize();}catch(e){} });
 </script>
 </body>
 </html>
