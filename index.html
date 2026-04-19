@@ -329,6 +329,22 @@ header{display:flex;align-items:center;justify-content:space-between;
       </div>
     </div>
 
+
+    <div class="rpsec">
+      <div class="rptitle">الملخص المالي للشركة</div>
+      <div style="background:var(--bg2);border:1px solid var(--br);border-radius:8px;padding:11px;">
+        <div style="font-size:10px;color:var(--t2);margin-bottom:8px;line-height:1.7;" id="finMsg">
+          اختر رمزاً واضغط "تحليل مالي" للحصول على ملخص الشركة.
+        </div>
+        <div class="ai-typing" id="finTyp" style="display:none;">
+          <span></span><span></span><span></span>
+          <em>جاري التحليل المالي...</em>
+        </div>
+        <button class="calc-btn" onclick="getFinancial()" style="margin-top:5px;">
+          🏦 تحليل مالي للشركة
+        </button>
+      </div>
+    </div>
     <div class="rpsec">
       <div class="rptitle">مناطق الدعم والمقاومة</div>
       <div id="srLvls"><div style="font-size:10px;color:var(--t3);text-align:center;padding:10px;">أدخل السعر واحسب</div></div>
@@ -528,6 +544,53 @@ function triggerAI(){
   const price=document.getElementById('priceInp').value||'';
   document.getElementById('aiInp').value=`حلل ${S.label} على الإطار ${TF_AR[S.tf]||S.tf}${price?` عند سعر ${price}`:''}. أعطني إعداد صفقة سكالب واضح بدخول ووقف وأهداف ونسبة RR.`;
   sendAI();
+}
+
+
+async function getFinancial() {
+  const msg = document.getElementById('finMsg');
+  const typ = document.getElementById('finTyp');
+  msg.style.display = 'none';
+  typ.style.display = 'flex';
+  
+  const marketMap = {
+    'CRYPTO': 'عملة رقمية',
+    'US': 'سوق أمريكي - ناسداك/نيويورك',
+    'SA': 'سوق الأسهم السعودي - تداول'
+  };
+  
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{role: 'user', content:
+`أنت محلل مالي خبير. قدم ملخصاً مالياً مختصراً جداً عن: ${S.label}
+السوق: ${marketMap[S.market] || S.market}
+
+اذكر بالعربية فقط:
+• وضع الشركة المالي العام (جملة أو جملتين)
+• آخر نتائج أرباح أو أداء مالي معروف
+• نقطة قوة رئيسية ونقطة ضعف رئيسية
+• التوقعات العامة (إيجابية/سلبية/محايدة) مع سبب مختصر
+• تقييم مختصر: هل السهم/العملة مناسب للتداول حالياً؟
+
+كن مختصراً جداً — 5 نقاط فقط. إذا كانت عملة رقمية ركز على الأداء والتبني.`
+        }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'لا توجد بيانات';
+    typ.style.display = 'none';
+    msg.style.display = 'block';
+    msg.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--cy)">$1</strong>').replace(/•/g, '<br>•');
+  } catch(e) {
+    typ.style.display = 'none';
+    msg.style.display = 'block';
+    msg.innerHTML = '⚠️ تعذر التحليل.';
+  }
 }
 
 function fmtN(n){
